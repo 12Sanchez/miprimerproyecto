@@ -23,23 +23,6 @@ echo "╚═════╝░░╚════╝░╚══════╝�
 
 echo "Welcome to JS-OSINT - Your Open Source Intelligence Tool in Bash!"
 
-function banner() {
-	echo
-	echo -e "███╗   ██╗███████╗██████╗  ██╗ ██████╗ ███████╗██╗███╗   ██╗████████╗"
-	echo -e "████╗  ██║██╔════╝╚════██╗███║██╔═══██╗██╔════╝██║████╗  ██║╚══██╔══╝"
-	echo -e "██╔██╗ ██║███████╗ █████╔╝╚██║██║   ██║███████╗██║██╔██╗ ██║   ██║   "
-	echo -e "██║╚██╗██║╚════██║██╔═══╝  ██║██║   ██║╚════██║██║██║╚██╗██║   ██║   "
-	echo -e "██║ ╚████║███████║███████╗ ██║╚██████╔╝███████║██║██║ ╚████║   ██║   "
-	echo -e "╚═╝  ╚═══╝╚══════╝╚══════╝ ╚═╝ ╚═════╝ ╚══════╝╚═╝╚═╝  ╚═══╝   ╚═╝   "
-	echo
-	echo
-	echo -e "  \t\t   ${cyan}Instalación básica de herramientas OSINT${end}"
-	echo -e "  \tScript para automatizar la instalación de herramientas OSINT"
-	echo -e "  \t\t\t   Master en ${red}Ciberseguridad 7ª Edición ${end}"
-	echo -e "  \t\t\t   Tutores: ${cyan}Félix Brezo y Yaiza Rubio ${end}"
-	echo -e "  \t\t\t  Creado por ${blue}Javier Sachez Torres${end}"
-	echo -e "  \t\t\t  Versión ${blue}1.0${end}"
-}
 
 # Declaracion de variables
 username=""
@@ -60,21 +43,127 @@ function ctrl_c() {
 	exit 0
 }
 
-function helpPanel() {
-	echo -e "${cyan}\n[?] Uso: ./ns21Osint.sh${end}"
-	echo -e "\n\t${purple}${end}${yellow} Modo${end}"
-	echo -e "\t\t${red}-a${end} -> Actualizar el sistema e instala requerimientos."
-	echo -e "\t\t${red}-i${end} -> Para instalar las herramientas OSINT"
-	echo -e "\t\t${red}-e${end} -> Para instalar las extensiones Firefox"
-	echo -e "\t\t${red}-m${end} -> Para instalar los marcadores Firefox"
-	echo -e "\t\t${red}-u${end} -> Para actualizar el script"
-	echo -e "\t\t${red}-h${end} -> Mostrar este panel de ayuda"
-	echo -e "\n\t${purple}${end}${yellow} Ejemplo de uso:${end}"
-	echo -e "\n\t${purple}./ns21Osint.sh -i ${end}"
-	echo -e "\n\t\t${yellow} Instala las herramientas OSINT${end}\n"
-	exit 0
-}
+ clear
+    echo "===== Menu ====="
+	echo "0. Install all tools"
+    echo "1. Use tools"
+    echo "2. Exit"
+    echo "================"
 
+    read -p "Enter your choice: " choice
+
+    case $choice in
+		0)
+        echo "Installing all tools"
+		echo "Osintgram
+    					nexfil
+						theHarvester
+						dmitry
+						maltego
+						recon-ng
+						dante-osint-suite-tools
+						osrframework
+						spiderfoot
+						exiftool"
+		echo -e "${gray}*****  Instalación de repositorios GitHub  *****${end}"
+			declare -a repos=(
+				Datalux/Osintgram
+				laramies/theHarvester
+				lanmaster53/recon-ng
+				Quantika14/osint-suite-tools
+				smicallef/spiderfoot
+				thewhiteh4t/nexfil
+			)
+
+			for repo in ${repos[@]}; do
+				echo -ne "\n${yellow}[*]${endC}${blue} Repositorio ${end}${purple} $repo${end}${blue}...${end}"
+
+				git clone https://github.com/$repo $githome/$(echo $repo | awk -F '/' '{print $NF}') >/dev/null 2>&1
+
+				if [ "$(echo $?)" == "0" ]; then
+					echo -e " ${green}(V)${end}"
+				else
+					echo -e " ${red}(X)${end}\n"
+				fi
+				sleep 1
+			done
+		;;
+        1)
+            if check_tool "tool1"; then
+                echo "Tool 1 is installed."
+            else
+                read -p "Tool 1 is not installed. Do you want to download it? (y/n): " download_choice
+                if [ "$download_choice" == "y" ]; then
+                    git clone https://github.com/Datalux/Osintgram $githome/$(echo Datalux/Osintgram | awk -F '/' '{print $NF}') >/dev/null 2>&1
+                    echo "Downloading Tool 1..."
+                else
+                    echo "Exiting."
+					cd Osintgram
+					python3 -m venv venv
+					echo "Launch python3"
+					source venv/bin/activate
+					echo "Install requirements pip"
+
+					python3 -m pip install -r requirements.txt
+
+					read -p "Please write your instagram username " username
+					read -p "Please write your instagram pwd " pwd
+
+					if [ -z "$username" && "pwd" ]; then
+						echo "Empty value"
+						exit 1
+					fi
+					cd config/
+					rm credentials.ini
+					vim credentials.ini
+					echo "username = " $username
+					echo "password = " $pwd
+                    exit 0
+					python3 main.py $username
+                fi
+            fi
+            ;;
+        2)
+            if check_tool "tool2"; then
+                echo "Tool 2 is installed."
+            else
+                read -p "Tool 2 is not installed. Do you want to download it? (y/n): " download_choice
+                if [ "$download_choice" == "y" ]; then
+                    # Add commands to download Tool 2 here
+                    echo "Downloading Tool 2..."
+                    # Example: sudo apt-get install tool2
+                else
+                    echo "Exiting."
+                    exit 0
+                fi
+            fi
+            ;;
+        3)
+            if check_tool "tool3"; then
+                echo "Tool 3 is installed."
+            else
+                read -p "Tool 3 is not installed. Do you want to download it? (y/n): " download_choice
+                if [ "$download_choice" == "y" ]; then
+                    # Add commands to download Tool 3 here
+                    echo "Downloading Tool 3..."
+                    # Example: sudo apt-get install tool3
+                else
+                    echo "Exiting."
+                    exit 0
+                fi
+            fi
+            ;;
+        4)
+            echo "Exiting."
+            exit 0
+            ;;
+        *)
+            echo "Invalid choice. Please enter a valid option."
+            ;;
+    esac
+
+    read -p "Press Enter to continue..."
+done
 function check() {
 	if [[ "$(echo $?)" == "0" ]]; then
 		echo -e "${cyan}\n[+] Acción realizada con éxito\n${end}"
