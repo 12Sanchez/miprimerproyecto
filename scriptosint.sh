@@ -104,7 +104,7 @@ function ctrl_c() {
 					sleep 1
             
                     echo "Exiting."
-					cd Osintgram
+					cd /home/javi/git/Osintgram
 					python3 -m venv venv
 					echo "Launch python3"
 					source venv/bin/activate
