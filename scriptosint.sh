@@ -118,7 +118,7 @@ function ctrl_c() {
 					sleep 1
             
                     echo "Exiting."
-					cd /home/javi/git/Osintgram
+					cd $githome/Osintgram
 					python3 -m venv venv
 					echo "Launch python3"
 					source venv/bin/activate
@@ -155,7 +155,7 @@ function ctrl_c() {
 			sleep 1
 
 			echo "Exiting..."
-			cd /home/javi/git/thewhiteh4t/nexfil
+			cd $githome/thewhiteh4t/nexfil
 			pip install nexfil
 			read -p "Please write an username " username
 			echo "ejecutando script"
@@ -175,8 +175,16 @@ function ctrl_c() {
 			sleep 1
 
 			pip install pycodestyle
-			cd /home/javi/git/lanmaster53/recon-ng
+			cd $githome/lanmaster53/recon-ng
  			pycodestyle --show-source --show-pep8 /path/to/module.py
+		;;
+
+		9)
+			echo "Update script from github / main branch"
+			actualiza_script
+			simulate_task
+			sleep 1
+			echo "Exiting..."
 		;;
         10)
             echo "Exiting."
@@ -432,85 +440,7 @@ function actualiza_script() {
 		exit 1
 	fi
 
-	git clone https://github.com/miguelns21/ns21Osint $githome/ns21osint >/dev/null 2>&1
-	cp $githome/ns21osint/* .
+	git clone https://github.com/12Sanchez/miprimerproyecto.git $githome/miprimerproyecto >/dev/null 2>&1
+	cp $githome/miprimerproyecto/* .
 	echo -e "\n${cyan}\n[+] Script actualizado a la última versión disponible con éxito\n${end}"
 }
-
-# Main Function
-if [ "$(id -u)" == "0" ]; then #Comprobamos si somos usuario root
-	clear
-	banner
-	echo
-	echo -e "\n${red}[*] Este script instalará herramientas en el perfil de usuario actual.${end}\n"
-	echo -e "${red}[*] Por favor, logeese como un usuario NO root para la correcta instalación.${end}\n"
-	echo -e "${red}[*] El script le solicitará la clave root cuando sea necesario.${end}\n"
-	exit 1
-fi
-
-if [[ $1 == "-h" ]] || [[ $1 == "" ]]; then
-	clear
-	banner
-	echo
-	helpPanel
-elif [[ $1 == "-a" ]]; then
-	clear
-	banner
-	echo
-	if [ "$(id -u)" != "0" ]; then #Comprobamos si somos usuario root
-		echo -e "\n${red}[*] Para la correcta instalación de las herramientas, es necesario ser root${end}\n"
-		dependencies #Esta opción requiere ser root
-		echo -e "\n${purple}[*] Sistema comprobado. Ahora puede ejecutar el script: ./ns21osing.sh -i${end}"
-		tput cnorm
-	fi
-
-elif [[ $1 == "-i" ]]; then
-	clear
-	banner
-	echo
-	crear_entorno_entorno
-	# Por motivos de depuración borraremos el directorio git antes de instalar.
-	rm -rf $githome
-	clonando_repos
-	Osintgram
-	nexfil
-	theHarvester
-	dmitry
-	maltego
-	recon-ng
-	dante-osint-suite-tools
-	osrframework
-	spiderfoot
-	exiftool
-	echo -e "\n${purple}[*] Herramientas instaladas con éxito.${end}"
-	tput cnorm
-elif [[ $1 == "-e" ]]; then #Instalación de las Extensiones de firefox
-	clear
-	banner
-	echo
-	crear_entorno_entorno_extensiones
-	tput civis
-	extensiones_firefox
-	tput cnorm
-elif [[ $1 == "-m" ]]; then #Instalación de los Marcadores de firefox
-	clear
-	banner
-	echo
-	tput civis
-	marcadores_firefox
-	tput cnorm
-elif [[ $1 == "-u" ]]; then #Actualización del script y del fichero de marcadores a través de github
-	clear
-	banner
-	echo
-	tput civis
-	actualiza_script
-	tput cnorm
-else #Se ha introducido un parámetro desconocido o no soportado
-	clear
-	banner
-	echo
-	helpPanel
-fi
-
-if [ ! -n "$1" ]; then helpPanel; fi
