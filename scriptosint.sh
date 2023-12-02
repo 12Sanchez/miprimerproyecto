@@ -122,7 +122,7 @@ function ctrl_c() {
                     exit 0
 					python3 main.py $username
                 fi
-            fi
+        
             ;;
         2)
             if check_tool "tool2"; then
