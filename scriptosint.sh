@@ -44,6 +44,7 @@ function ctrl_c() {
 }
 
  clear
+ while true; do
 	echo "██████╗░░█████╗░███████╗██╗░░░██╗███████╗██████╗░"
 	echo "██╔══██╗██╔══██╗██╔════╝██║░░░██║██╔════╝██╔══██╗"
 	echo "██║░░██║██║░░██║█████╗░░╚██╗░██╔╝█████╗░░██║░░██║"
@@ -53,8 +54,13 @@ function ctrl_c() {
 
 	echo "Welcome to JS-OSINT - Your Open Source Intelligence Tool in Bash!"
     echo "===== Menu ====="
-	echo "0. Install all tools"
-    echo "1. Use tools"
+	echo "Welcome to all tools h4ck1ng.com"
+    echo "1. Use tool Osintgram"
+	echo "2. Use tool Nexfil"
+	echo "3. Use tool theHarvester"
+	echo "4. Use tool dmitry"
+	echo "5. Use tool maltego"
+	echo "6. Use tool recon-ng"
     echo "2. Exit"
     echo "================"
 
@@ -128,47 +134,51 @@ function ctrl_c() {
 						exit 1
 					fi
 					cd config/
-					txt = "username = $username \n password = $password"
-					echo "escribe el texto $txt"
-					echo -e "$txt" > credentials.ini
+					
+					
 					cat credentials.ini
 					cd ..
 					python3 main.py $username
-					open https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.thesun.co.uk%2Fsport%2F17384932%2Fcristiano-ronaldo-siu-celebration-what-does-it-mean-why-world-cup%2F&psig=AOvVaw3kPK7mzkb0JeoqlKbK986F&ust=1701608545714000&source=images&cd=vfe&ved=0CBEQjRxqFwoTCPCd7K718IIDFQAAAAAdAAAAABAE
+					python -m webbrowser https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.thesun.co.uk%2Fsport%2F17384932%2Fcristiano-ronaldo-siu-celebration-what-does-it-mean-why-world-cup%2F&psig=AOvVaw3kPK7mzkb0JeoqlKbK986F&ust=1701608545714000&source=images&cd=vfe&ved=0CBEQjRxqFwoTCPCd7K718IIDFQAAAAAdAAAAABAE
                 fi
         
             ;;
         2)
-            if check_tool "tool2"; then
-                echo "Tool 2 is installed."
-            else
-                read -p "Tool 2 is not installed. Do you want to download it? (y/n): " download_choice
-                if [ "$download_choice" == "y" ]; then
-                    # Add commands to download Tool 2 here
-                    echo "Downloading Tool 2..."
-                    # Example: sudo apt-get install tool2
-                else
-                    echo "Exiting."
-                    exit 0
-                fi
-            fi
-            ;;
-        3)
-            if check_tool "tool3"; then
-                echo "Tool 3 is installed."
-            else
-                read -p "Tool 3 is not installed. Do you want to download it? (y/n): " download_choice
-                if [ "$download_choice" == "y" ]; then
-                    # Add commands to download Tool 3 here
-                    echo "Downloading Tool 3..."
-                    # Example: sudo apt-get install tool3
-                else
-                    echo "Exiting."
-                    exit 0
-                fi
-            fi
-            ;;
-        4)
+			git clone https://github.com/thewhiteh4t/nexfil.git $githome/$(echo thewhiteh4t/nexfil | awk -F '/' '{print $NF}') >/dev/null 2>&1
+			echo "Downloading nexfil..."
+			simulate_task
+			if [ "$(echo $?)" == "0" ]; then
+				echo -e " ${green}(V)${end}"
+			else
+				echo -e " ${red}(X)${end}\n"
+			fi
+			sleep 1
+
+			echo "Exiting..."
+			cd /home/javi/git/thewhiteh4t/nexfil
+			pip install nexfil
+			read -p "Please write an username " username
+			echo "ejecutando script"
+			nexfil -u useranme
+
+		;;
+
+		3)
+			git clone https://github.com/lanmaster53/recon-ng.git $githome/$(echo lanmaster53/recon-ng | awk -F '/' '{print $NF}') > /dev/null 2>&1
+			echo "Downloading recon-ng..."
+            simulate_task
+			if [ "$(echo $?)" == "0" ]; then
+				echo -e " ${green}(V)${end}"
+			else
+				echo -e " ${red}(X)${end}\n"
+			fi
+			sleep 1
+
+			pip install pycodestyle
+			cd /home/javi/git/lanmaster53/recon-ng
+ 			pycodestyle --show-source --show-pep8 /path/to/module.py
+		;;
+        10)
             echo "Exiting."
             exit 0
             ;;
@@ -187,6 +197,36 @@ function check() {
 		tput cnorm
 		exit 1
 	fi
+}
+
+
+# Function to draw a progress bar
+draw_progress_bar() {
+    local width=50
+    local progress=$1
+    local percentage=$((progress * 100 / width))
+    printf "["
+    for ((i = 0; i < width; i++)); do
+        if ((i < progress)); then
+            printf "="
+        else
+            printf " "
+        fi
+    done
+    printf "] %d%%\r" "$percentage"
+}
+
+# Simulate a task with a progress bar
+simulate_task() {
+    local total_steps=50
+
+    for ((step = 0; step < total_steps; step++)); do
+        # Simulate some work here
+        sleep 0.1
+        draw_progress_bar "$step"
+    done
+
+    echo "Completed $var"
 }
 
 function checkV() {
@@ -299,198 +339,7 @@ function crear_entorno_entorno() {
 	echo -e "\n"
 }
 
-function clonando_repos() {
-	tput civis
-	# GitHub Repo clones
-	echo -e "${gray}*****  Instalación de repositorios GitHub  *****${end}"
-	declare -a repos=(
-		Datalux/Osintgram
-		laramies/theHarvester
-		lanmaster53/recon-ng
-		Quantika14/osint-suite-tools
-		smicallef/spiderfoot
-		thewhiteh4t/nexfil
-	)
 
-	for repo in ${repos[@]}; do
-		echo -ne "\n${yellow}[*]${endC}${blue} Repositorio ${end}${purple} $repo${end}${blue}...${end}"
-
-		git clone https://github.com/$repo $githome/$(echo $repo | awk -F '/' '{print $NF}') >/dev/null 2>&1
-
-		if [ "$(echo $?)" == "0" ]; then
-			echo -e " ${green}(V)${end}"
-		else
-			echo -e " ${red}(X)${end}\n"
-		fi
-		sleep 1
-	done
-}
-
-function Osintgram() {
-	# Osintgram
-	echo -ne "\n${yellow}[*]${endC}${blue} Instalación ${end}${purple}Osintgram ${end}${blue}...${end}"
-	cd $githome/Osintgram
-
-	test -f /usr/bin/pip &>/dev/null
-
-	if [ "$(echo $?)" != "0" ]; then
-		echo -e "${red}\n[!] No existe 'pip'. Ejecute ./ns21osint.sh -i para instalar los requisitos mínimos.\n${end}"
-		tput cnorm
-		exit 1
-	fi
-
-	pip install -r requirements.txt >/dev/null 2>&1
-	checkV
-
-	echo -e "\n\t${yellow}Ejecución:${end}\n"
-	echo -e "\t${yellow}\t>cd $githome/Osintgram/;make setup${end}"
-	echo -e "\t${yellow}\t>python3 main.py <target username> ${end}\n"
-
-	ln -s $githome/Osintgram $userdesktop/Redes_Sociales/Osintgram >/dev/null 2>&1
-}
-
-function nexfil() {
-	# nexfil
-	echo -ne "\n${yellow}[*]${endC}${blue} Instalación ${end}${purple}nexfil ${end}${blue}...${end}"
-	cd $githome/nexfil
-
-	test -f /usr/bin/pip3 &>/dev/null
-
-	if [ "$(echo $?)" != "0" ]; then
-		echo -e "${red}\n[!] No existe 'pip3'. Ejecute ./ns21osint.sh -i para instalar los requisitos mínimos.\n${end}"
-		tput cnorm
-		exit 1
-	fi
-
-	pip3 install -r requirements.txt >/dev/null 2>&1
-	checkV
-
-	echo -e "\n\t${yellow}Ejecución:${end}\n"
-	echo -e "\t${yellow}\t>cd $githome/nexfil/${end}"
-	echo -e "\t${yellow}\t>python3 nexfil.py -h ${end}\n"
-
-	ln -s $githome/nexfil $userdesktop/Redes_Sociales/nexfil >/dev/null 2>&1
-}
-
-function theHarvester() {
-	# theHarvester
-	echo -ne "\n${yellow}[*]${endC}${blue} Instalación ${end}${purple}theHarvester ${end}${blue}...${end}"
-	cd $githome/theHarvester
-
-	test -f /usr/bin/python3 &>/dev/null
-
-	if [ "$(echo $?)" != "0" ]; then
-		echo -e "${red}\n[!] No existe 'python3'. Ejecute ./ns21osint.sh -i para instalar los requisitos mínimos.\n${end}"
-		tput cnorm
-		exit 1
-	fi
-
-	python3 -m pip install -r requirements/base.txt >/dev/null 2>&1
-	checkV
-
-	echo -e "\n\t${yellow}Ejecución:${end}\n"
-	echo -e "\t${yellow}\t>cd $githome/theHarvester/${end}"
-	echo -e "\t${yellow}\t>python3 theHarvester.py -h ${end}\n"
-
-	ln -s $githome/theHarvester $userdesktop/Email/theHarvester >/dev/null 2>&1
-}
-
-function dmitry() {
-	# dmitry
-	echo -ne "\n${yellow}[*]${endC}${blue} Instalación ${end}${purple}dmitry ${end}${blue}...${end}"
-	mkdir $githome/dmitry >/dev/null 2>&1
-	instalator dmitry
-	checkV
-
-	echo -e "\n\t${yellow}Ejecución:${end}\n"
-	echo -e "\t${yellow}\t>dmitry ${end}\n"
-
-	ln -s /usr/bin/dmitry $userdesktop/Dominios/dmitry >/dev/null 2>&1
-}
-
-function maltego() {
-	# maltego
-	echo -ne "\n${yellow}[*]${endC}${blue} Descargando ${end}${purple}maltego ${end}${blue}...${end}"
-	mkdir $githome/maltego >/dev/null 2>&1
-	cd $githome/maltego
-	wget https://downloads.maltego.com/maltego-v4/linux/Maltego.v4.5.0.deb >/dev/null 2>&1
-	check
-	echo -ne "\n${yellow}[*]${endC}${blue} Instalando maltego ${end}${blue}...${end}"
-	sudo dpkg -i Maltego.v4.2.18.13878.deb >/dev/null 2>&1
-	checkV
-
-	echo -e "\n\t${yellow}Ejecución:${end}\n"
-	echo -e "\t${yellow}\t>maltego ${end}\n"
-
-	ln -s /usr/bin/maltego $userdesktop/General/maltego >/dev/null 2>&1
-}
-
-function recon-ng() {
-	# recon-ng
-	echo -ne "\n${yellow}[*]${endC}${blue} Instalación ${end}${purple}recon-ng ${end}${blue}...${end}"
-	cd $githome/recon-ng
-	pip install -r REQUIREMENTS >/dev/null 2>&1
-	checkV
-
-	echo -e "\n\t${yellow}Ejecución:${end}\n"
-	echo -e "\t${yellow}\t>cd $githome/recon-ng/${end}"
-	echo -e "\t${yellow}\t>./recon-ng ${end}\n"
-
-	ln -s $githome/recon-ng $userdesktop/General/recon-ng >/dev/null 2>&1
-}
-
-function dante-osint-suite-tools() {
-	# osint-suite-tools
-	echo -ne "\n${yellow}[*]${endC}${blue} Instalación ${end}${purple}osint-suite-tools ${end}${blue}...${end}"
-	cd $githome/osint-suite-tools
-	sed -i '1d' requiriments.txt #Existe una dependencia no compatible en la línea 1.
-	pip3 install -r requiriments.txt >/dev/null 2>&1
-	checkV
-
-	echo -e "\n\t${yellow}Ejecución:${end}\n"
-	echo -e "\t${yellow}\t>cd $githome/osint-suite-tools/${end}"
-	echo -e "\t${yellow}\t>python3 BuscadorPersonas.py ${end}\n"
-
-	ln -s $githome/osint-suite-tools $userdesktop/General/osint-suite-tools >/dev/null 2>&1
-}
-
-function osrframework() {
-	# osrframework
-	echo -ne "\n${yellow}[*]${endC}${blue} Instalación ${end}${purple}osrframework ${end}${blue}...${end}"
-	pip3 install osrframework >/dev/null 2>&1
-	checkV
-
-	echo -e "\n\t${yellow}Ejecución:${end}\n"
-	echo -e "\t${yellow}\t>sudo osrf --help ${end}\n"
-
-	ln -s /usr/local/bin/osrf $userdesktop/General/osrf >/dev/null 2>&1
-}
-
-function spiderfoot() {
-	# spiderfoot
-	echo -ne "\n${yellow}[*]${endC}${blue} Instalación ${end}${purple}spiderfoot ${end}${blue}...${end}"
-	cd $githome/spiderfoot
-	pip3 install -r requirements.txt >/dev/null 2>&1
-	checkV
-
-	echo -e "\n\t${yellow}Ejecución:${end}\n"
-	echo -e "\t${yellow}\t>cd $githome/spiderfoot/${end}"
-	echo -e "\t${yellow}\t>python3 ./sf.py -l 127.0.0.1:5001 ${end}\n"
-
-	ln -s $githome/spiderfoot $userdesktop/General/spiderfoot >/dev/null 2>&1
-}
-
-function exiftool() {
-	# exiftool
-	echo -ne "\n${yellow}[*]${endC}${blue} Instalación ${end}${purple}exiftool ${end}${blue}...${end}"
-	instalator exiftool
-	checkV
-
-	echo -e "\n\t${yellow}Ejecución:${end}\n"
-	echo -e "\t${yellow}\t>exiftool [OPTIONS] FILE ${end}\n"
-
-	ln -s /usr/bin/exiftool $userdesktop/Metadatos/exiftool >/dev/null 2>&1
-}
 
 function crear_entorno_entorno_extensiones() {
 	# Crea el directorio $extensionhome, y descarga los ficheros necesarios
