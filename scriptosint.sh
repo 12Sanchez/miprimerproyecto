@@ -93,10 +93,11 @@ function ctrl_c() {
                 echo "Tool 1 is installed."
             else
                 read -p "Tool 1 is not installed. Do you want to download it? (y/n): " download_choice
-                if [ "$download_choice" == "y" ]; then
+               
                     git clone https://github.com/Datalux/Osintgram $githome/$(echo Datalux/Osintgram | awk -F '/' '{print $NF}') >/dev/null 2>&1
                     echo "Downloading Tool 1..."
-                else
+
+            
                     echo "Exiting."
 					cd Osintgram
 					python3 -m venv venv
@@ -163,7 +164,7 @@ function ctrl_c() {
     esac
 
     read -p "Press Enter to continue..."
-done
+
 function check() {
 	if [[ "$(echo $?)" == "0" ]]; then
 		echo -e "${cyan}\n[+] Acción realizada con éxito\n${end}"
