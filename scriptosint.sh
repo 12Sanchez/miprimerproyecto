@@ -128,8 +128,8 @@ function ctrl_c() {
 						exit 1
 					fi
 					cd config/
-					txt = "username = $username\npassword = $password"
-					echo "escribe el texto"
+					txt = "username = $username \n password = $password"
+					echo "escribe el texto $txt"
 					echo -e "$txt" > credentials.ini
 					cat credentials.ini
 					cd ..
