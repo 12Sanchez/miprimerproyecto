@@ -94,9 +94,14 @@ function ctrl_c() {
             else
                 read -p "Tool 1 is not installed. Do you want to download it? (y/n): " download_choice
                
-                    git clone https://github.com/Datalux/Osintgram $githome/$(echo Datalux/Osintgram | awk -F '/' '{print $NF}') >/dev/null 2>&1
+                    git clone https://github.com/Datalux/Osintgram.git $githome/$(echo Datalux/Osintgram | awk -F '/' '{print $NF}') >/dev/null 2>&1
                     echo "Downloading Tool 1..."
-
+					if [ "$(echo $?)" == "0" ]; then
+						echo -e " ${green}(V)${end}"
+					else
+						echo -e " ${red}(X)${end}\n"
+					fi
+					sleep 1
             
                     echo "Exiting."
 					cd Osintgram
@@ -110,16 +115,14 @@ function ctrl_c() {
 					read -p "Please write your instagram username " username
 					read -p "Please write your instagram pwd " pwd
 
-					if [ -z "$username" && "pwd" ]; then
+					if [ -z "$username" && "$pwd" ]; then
 						echo "Empty value"
 						exit 1
 					fi
 					cd config/
 					rm credentials.ini
-					vim credentials.ini
-					echo "username = " $username
-					echo "password = " $pwd
-                    exit 0
+					txt = "username = $username\npassword = $password"
+					echo -e "$txt" > credentials.ini
 					python3 main.py $username
                 fi
         
