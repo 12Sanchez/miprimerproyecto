@@ -61,7 +61,12 @@ function ctrl_c() {
 	echo "4. Use tool dmitry"
 	echo "5. Use tool maltego"
 	echo "6. Use tool recon-ng"
-    echo "2. Exit"
+	echo "7. Use tool osint"
+    echo "8. Use tool osrFramework"
+    echo "9. Use tool exiftool"
+	echo "10. spiderfoot"
+    echo "11: UPDATE !!"
+    echo "12. Exit"
     echo "================"
 
     read -p "Enter your choice: " choice
@@ -179,14 +184,73 @@ function ctrl_c() {
  			pycodestyle --show-source --show-pep8 /path/to/module.py
 		;;
 
-		9)
+
+		4)
+			echo "First of all, we need to install all the dependencies!"
+			sudo apt update
+			sudo apt install -y mongodb
+			if [ "$(echo $?)" == "0" ]; then
+				echo -e " ${green}'\xE2\x98\xA0'${end}"
+			else 
+				echo -e " ${red}'\xE2\x98\xA0'${end}"
+			fi
+			sleep 1
+
+			sudo systemctl start mongodb
+			sudo systemctl status mongodb
+            sudo systemctl enable mongodb
+            sudo systemctl status mongodb
+			
+			sudo apt-get install pdfgrep
+
+			git clone https://github.com/Quantika14/osint-suite-tools.git $githome/$(echo Quantika14/osint-suite-tools | awk -F '/' '{print $NF}') > /dev/null 2>&1
+			pip3 install -r requirements.txt
+			cd $githome/Quantika14/osint-suite-tools
+			echo "All are installed well!"
+			while true; do
+
+			echo "1. Buscar nick"
+			echo "2. Buscar emails"
+			echo "3. Buscar telefono"
+			echo "4. Buscar personas"
+			echo "5. Buscar fakenews"
+			echo "6. Exit"
+            echo "================"
+			echo "================"
+
+			read -p "Enter your choice: " choose
+
+			case $choosse in
+				1)
+					python3 BuscardorNick.py
+				;;
+				2)
+					python3 BuscardorEmails.py
+				;;
+				3)
+					python3 BuscardorTelefonos.py
+				;;
+				4)
+                    python3 BuscardorPersonas.py
+                ;;
+                5)
+					python3 BuscardorNoticiasFalsas.py
+                ;;
+                6)
+
+                    echo "Exiting..."
+					exit 0
+
+		;;
+
+		11)
 			echo "Update script from github / main branch"
 			actualiza_script
 			simulate_task
 			sleep 1
 			echo "Exiting..."
 		;;
-        10)
+        12)
             echo "Exiting."
             exit 0
             ;;
