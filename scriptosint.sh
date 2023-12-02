@@ -115,7 +115,7 @@ function ctrl_c() {
 					read -p "Please write your instagram username " username
 					read -p "Please write your instagram pwd " pwd
 
-					if [ -z "$username" && "$pwd" ]; then
+					if [ -z "$username" ]; then
 						echo "Empty value"
 						exit 1
 					fi
@@ -123,6 +123,7 @@ function ctrl_c() {
 					rm credentials.ini
 					txt = "username = $username\npassword = $password"
 					echo -e "$txt" > credentials.ini
+					cd ..
 					python3 main.py $username
                 fi
         
