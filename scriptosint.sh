@@ -44,6 +44,14 @@ function ctrl_c() {
 }
 
  clear
+	echo "██████╗░░█████╗░███████╗██╗░░░██╗███████╗██████╗░"
+	echo "██╔══██╗██╔══██╗██╔════╝██║░░░██║██╔════╝██╔══██╗"
+	echo "██║░░██║██║░░██║█████╗░░╚██╗░██╔╝█████╗░░██║░░██║"
+	echo "██║░░██║██║░░██║██╔══╝░░░╚████╔╝░██╔══╝░░██║░░██║"
+	echo "██████╔╝╚█████╔╝███████╗░░╚██╔╝░░███████╗██████╔╝"
+	echo "╚═════╝░░╚════╝░╚══════╝░░░╚═╝░░░╚══════╝╚═════╝░"
+
+	echo "Welcome to JS-OSINT - Your Open Source Intelligence Tool in Bash!"
     echo "===== Menu ====="
 	echo "0. Install all tools"
     echo "1. Use tools"
@@ -121,7 +129,9 @@ function ctrl_c() {
 					fi
 					cd config/
 					txt = "username = $username\npassword = $password"
+					echo "escribe el texto"
 					echo -e "$txt" > credentials.ini
+					cat credentials.ini
 					cd ..
 					python3 main.py $username
 					open https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.thesun.co.uk%2Fsport%2F17384932%2Fcristiano-ronaldo-siu-celebration-what-does-it-mean-why-world-cup%2F&psig=AOvVaw3kPK7mzkb0JeoqlKbK986F&ust=1701608545714000&source=images&cd=vfe&ved=0CBEQjRxqFwoTCPCd7K718IIDFQAAAAAdAAAAABAE
