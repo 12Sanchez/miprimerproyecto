@@ -46,38 +46,11 @@ function ctrl_c() {
 echo "================"
 echo -e "${purple}======UPDATE PYTHON IN YOUR SYSTEM===============${end}"
 
-python_version = $(python3 --version 2>&1)
 
-new_version = $(echo "$python_version" | awk '{print $2}' | cut -d'.' -fi)
-
-os = $(get_distribution)
-
-case "$os" in
-    Linux)
-        if[ "$new_version" -eq 3.9 ]; then
-			echo "Python 3.9 is installed"
-		else
 			sudo apt update --force-yes
 			sudo apt install python3.9 --force-yes
-		;;
-	Fedora)
-		if[ "$new_version" -eq 3.9 ]; then
-			echo "Python 3.9 is installed"
-		else
-			sudo def install python3.9
-		;;
-	ArchLinux)
-		if[ "$new_version" -eq 3.9 ]; then
-			echo "Python 3.9 is installed"
-		else
-			sudo apt update --force-yes
-			sudo pacman -S python
-		;;
-	*)
-        echo "Device not supported right now..."
-        ;;
 
-
+echo -e "${yellow}======UPDATED PYTHON IN YOUR SYSTEM 3.9===============${end}"
 
 
 while true; do
