@@ -44,13 +44,13 @@ function ctrl_c() {
 }
 
 echo "================"
-echo "======UPDATE PYTHON IN YOUR SYSTEM==============="
+echo -e "${purple}======UPDATE PYTHON IN YOUR SYSTEM===============${end}"
 
 python_version = $(python3 --version 2>&1)
 
 new_version = $(echo "$python_version" | awk '{print $2}' | cut -d'.' -fi)
 
-os = $(uname -s)
+os = $(get_distribution)
 
 case "$os" in
     Linux)
@@ -102,7 +102,8 @@ while true; do
     echo "9. Use tool exiftool"
 	echo "10. spiderfoot"
     echo "11: UPDATE !!"
-    echo "12. Exit"
+	echo "12. Bookmarks"
+    echo "13. Exit"
     echo "================"
 
     read -p "Enter your choice: " choice
@@ -135,12 +136,7 @@ while true; do
 
 				git clone https://github.com/$repo $githome/$(echo $repo | awk -F '/' '{print $NF}') >/dev/null 2>&1
 
-				if [ "$(echo $?)" == "0" ]; then
-					echo -e " ${green}(V)${end}"
-				else
-					echo -e " ${red}(X)${end}\n"
-				fi
-				sleep 1
+				checkV
 			done
 		;;
         1)
@@ -151,12 +147,7 @@ while true; do
                
                     git clone https://github.com/Datalux/Osintgram.git $githome/$(echo Datalux/Osintgram | awk -F '/' '{print $NF}') >/dev/null 2>&1
                     echo "Downloading Tool 1..."
-					if [ "$(echo $?)" == "0" ]; then
-						echo -e " ${green}(V)${end}"
-					else
-						echo -e " ${red}(X)${end}\n"
-					fi
-					sleep 1
+					checkV
             
                     echo "Exiting."
 					cd $githome/Osintgram
@@ -188,12 +179,7 @@ while true; do
 			git clone https://github.com/thewhiteh4t/nexfil.git $githome/$(echo thewhiteh4t/nexfil | awk -F '/' '{print $NF}') >/dev/null 2>&1
 			echo "Downloading nexfil..."
 			simulate_task
-			if [ "$(echo $?)" == "0" ]; then
-				echo -e " ${green}(V)${end}"
-			else
-				echo -e " ${red}(X)${end}\n"
-			fi
-			sleep 1
+			checkV
 
 			echo "Exiting..."
 			cd $githome/thewhiteh4t/nexfil
@@ -207,14 +193,7 @@ while true; do
 			git clone https://github.com/laramies/theHarvester.git $githome/$(echo laramies/theHarvester | awk -F '/' '{print $NF}') > /dev/null 2>&1
 			echo "Downloading theHarvester..."
             simulate_task
-			if [ "$(echo $?)" == "0" ]; then
-			
-                echo -e " ${green}(V)${end}"
-            else	
-				echo -e " ${red}(X)${end}\n"
-			
-			fi
-            sleep 1
+			checkV
 
             sudo apt install python3-virtualenv
 			echo -e " ${green}Install python3-virtualenv${end}"
@@ -230,12 +209,7 @@ while true; do
 			git clone https://github.com/jaygreig86/dmitry.git $githome/$(echo jaygreig86/dmitry | awk -F '/' '{print $NF}') > /dev/null 2>&1
 			echo "Downloading dmitry..."
             simulate_task
-			if [ "$(echo $?)" == "0" ]; then
-				echo -e " ${green}(V)${end}"
-			else
-                echo -e " ${red}(X)${end}\n"
-			fi
-            sleep 1
+			checkV
 
             echo "Exiting..."
 			cd $githome/jaygreig86/dmitry
@@ -250,13 +224,7 @@ while true; do
 			git clone https://github.com/MaltegoTech/maltego-trx.git $githome/$(echo MaltegoTech/maltego-trx | awk -F '/' '{print $NF}') > /dev/null 2>&1
 			echo "Downloading maltego-trx..."
             simulate_task
-			if [ "$(echo $?)" == "0" ]; then
-			
-                echo -e " ${green}(V)${end}"
-            else
-				echo -e " ${red}(X)${end}\n"
-			fi
-			sleep 1
+			checkV
 
 			pip3 install flask==2.2.3 cryptography==39.0.1
 
@@ -292,12 +260,7 @@ while true; do
 			git clone https://github.com/lanmaster53/recon-ng.git $githome/$(echo lanmaster53/recon-ng | awk -F '/' '{print $NF}') > /dev/null 2>&1
 			echo "Downloading recon-ng..."
             simulate_task
-			if [ "$(echo $?)" == "0" ]; then
-				echo -e " ${green}(V)${end}"
-			else
-				echo -e " ${red}(X)${end}\n"
-			fi
-			sleep 1
+			checkV
 
 			pip install pycodestyle
 			cd $githome/lanmaster53/recon-ng
@@ -381,7 +344,18 @@ while true; do
 			sleep 1
 			echo "Exiting..."
 		;;
-        12)
+		12)
+			echo "Update bookmarks"
+			install_firefox
+			simulate_task
+			sleep 1
+			crear_entorno_entorno
+			crear_entorno_entorno_extensiones
+			extensiones_firefox
+			marcadores_firefox
+			echo "Existing..."
+		;;
+        13)
             echo "Exiting."
             exit 0
             ;;
@@ -441,61 +415,41 @@ function checkV() {
 	sleep 1
 }
 
-function press_key() {
-	echo -e "\n${red}[.] Presiona la tecla Enter para continuar...${end}" && read
+
+
+function install_firefox() {
+    # Debian/Ubuntu
+    if command -v apt-get &> /dev/null; then
+        sudo apt-get update
+        sudo apt-get install firefox -y
+    # Red Hat/Fedora
+    elif command -v dnf &> /dev/null; then
+        sudo dnf install firefox -y
+    # Arch Linux
+    elif command -v pacman &> /dev/null; then
+        sudo pacman -S firefox --noconfirm
+    else
+        echo "Unsupported distribution. Please install Firefox manually."
+        exit 1
+    fi
 }
 
-function instalator(){
-	echo -ne "\n${yellow}[*]${endC}${blue} Herramienta${end}${purple} $1${end}${blue}...${end}"
-	echo -e "\n${yellowColour}[i]${endColour}${grayColour} Instalando...${endColour}"
-	sleep 1
-	## Comprobamos si estamos en ArchLinux (sin Pacman que necesita permisos de superusuario)
-	if [ -n "$(which yay)" ]; then
-		yay -S $1 >/dev/null 2>&1
-	elif [ -n "$(which yaourt)" ]; then
-		yaourt -S $1 >/dev/null 2>&1
-	# Derivados de devian
-	elif [ -n "$(which apt)" ]; then
-		sudo apt-get install -y $1 >/dev/null 2>&1
-	fi
-	echo -e "\n${greenColour}[V]${endColour}${grayColour} $1${endColour}${yellowColour} instalado${endColour}\n"
-	sleep 2
+function get_distribution() {
+    if [ -f /etc/os-release ]; then
+        # Use os-release file
+        source /etc/os-release
+        echo "$PRETTY_NAME"
+    elif [ -f /etc/redhat-release ]; then
+        # Red Hat-based distributions
+        cat /etc/redhat-release
+    elif [ -f /etc/debian_version ]; then
+        # Debian-based distributions
+        echo "Debian"
+    else
+        # Unable to determine distribution
+        echo "Unknown distribution"
+    fi
 }
-function dependencies() {
-	tput civis
-	counter=0
-	dependencies_array=(git python3 python3-venv python3-pip libreadline-dev mongodb pdfgrep default-jre sqlite3 firefox)
-
-	# Actualización del sistema
-
-	if [ -n "$(which yay)" ]; then
-		echo -e "${yellow}[*]${end}${gray} Actualizando las fuentes de los programas (yay -Syyu)...${end}\n"
-		yay -Syyu > /dev/null 2>&1
-	elif [ -n "$(which yaourt)" ]; then
-		echo -e "${yellow}[*]${end}${gray} Actualizando las fuentes de los programas (yaurt -Syyu)...${end}\n"
-		yaourt -Syyu > /dev/null 2>&1
-	# Derivados de devian
-	elif [ -n "$(which apt)" ]; then
-		echo -e "${yellow}[*]${end}${gray} Actualizando las fuentes de los programas (apt update)...${end}\n"
-		sudo apt update > /dev/null 2>&1
-		
-	else
-		echo "Instale manualmente la dependencias necesarias antes de continuar, gracias"
-		for program in "${dependencies_array[@]}"; do
-			echo $program
-		done
-		tput cnorm
-		exit 1
-	fi
-
-	for program in "${dependencies_array[@]}"; do
-		if [ ! "$(command -v $program)" ]; then
-			instalator $program
-			let counter+=1
-		fi
-	done
-}
-
 
 function crear_entorno_entorno() {
 	# Crea el directorio ~/git, asigna $githome, y descarga los ficheros necesarios
