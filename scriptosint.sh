@@ -43,6 +43,43 @@ function ctrl_c() {
 	exit 0
 }
 
+echo "================"
+echo "======UPDATE PYTHON IN YOUR SYSTEM==============="
+
+python_version = $(python3 --version 2>&1)
+
+new_version = $(echo "$python_version" | awk '{print $2}' | cut -d'.' -fi)
+
+os = $(uname -s)
+
+case "$os" in
+    Linux)
+        if[ "$new_version" -eq 3.9 ]; then
+			echo "Python 3.9 is installed"
+		else
+			sudo apt update --force-yes
+			sudo apt install python3.9 --force-yes
+		;;
+	Fedora)
+		if[ "$new_version" -eq 3.9 ]; then
+			echo "Python 3.9 is installed"
+		else
+			sudo def install python3.9
+		;;
+	ArchLinux)
+		if[ "$new_version" -eq 3.9 ]; then
+			echo "Python 3.9 is installed"
+		else
+			sudo apt update --force-yes
+			sudo pacman -S python
+		;;
+	*)
+        echo "Device not supported right now..."
+        ;;
+
+
+
+
 while true; do
 	echo "██████╗░░█████╗░███████╗██╗░░░██╗███████╗██████╗░"
 	echo "██╔══██╗██╔══██╗██╔════╝██║░░░██║██╔════╝██╔══██╗"
@@ -166,8 +203,92 @@ while true; do
 			nexfil -u useranme
 
 		;;
-
 		3)
+			git clone https://github.com/laramies/theHarvester.git $githome/$(echo laramies/theHarvester | awk -F '/' '{print $NF}') > /dev/null 2>&1
+			echo "Downloading theHarvester..."
+            simulate_task
+			if [ "$(echo $?)" == "0" ]; then
+			
+                echo -e " ${green}(V)${end}"
+            else	
+				echo -e " ${red}(X)${end}\n"
+			
+			fi
+            sleep 1
+
+            sudo apt install python3-virtualenv
+			echo -e " ${green}Install python3-virtualenv${end}"
+			cd $githome/laramies/theHarvester
+			echo "Launch python3 installation requested"
+			python3 -m pip install -r requirements/dev.txt
+			echo -e " ${green}Install requirements.txt${end}"
+			python3 -m pip install -r requirements/base.txt
+			echo -e " ${green}Install requirements/base.txt${end}"
+			python3 theHarvester.py -h
+		;;
+		4)
+			git clone https://github.com/jaygreig86/dmitry.git $githome/$(echo jaygreig86/dmitry | awk -F '/' '{print $NF}') > /dev/null 2>&1
+			echo "Downloading dmitry..."
+            simulate_task
+			if [ "$(echo $?)" == "0" ]; then
+				echo -e " ${green}(V)${end}"
+			else
+                echo -e " ${red}(X)${end}\n"
+			fi
+            sleep 1
+
+            echo "Exiting..."
+			cd $githome/jaygreig86/dmitry
+			./configure
+			make install
+			echo -e " ${green}(V)${end}"
+			read -p "Address and port: " address
+			dmitry -iwnso $address
+			
+		;;
+		5)
+			git clone https://github.com/MaltegoTech/maltego-trx.git $githome/$(echo MaltegoTech/maltego-trx | awk -F '/' '{print $NF}') > /dev/null 2>&1
+			echo "Downloading maltego-trx..."
+            simulate_task
+			if [ "$(echo $?)" == "0" ]; then
+			
+                echo -e " ${green}(V)${end}"
+            else
+				echo -e " ${red}(X)${end}\n"
+			fi
+			sleep 1
+
+			pip3 install flask==2.2.3 cryptography==39.0.1
+
+			cd $githome/MaltegoTech/maltego-trx
+			pip install maltego-trx
+			if [ "$(echo $?)" == "0" ]; then
+			
+                echo -e " ${green}Installed${end}"
+
+				sleep 1
+				echo "Launching the tool"
+				read -p "Project name: " projectName
+				maltego-trx start $projectName
+				sleep 1
+				echo "Project created!! "
+                
+				read -p "Do you want to copy the starter files to your directory (S/N) " yep
+				yep_f = $(echo "$yep" | tr '[:lower:]' '[:upper:]')
+				if [ "$yep_f" == "S" ]; then
+			
+					maltego-trx init
+				else
+					echo -e " ${red}(X)${end}\n"
+				fi
+            else
+				echo -e " ${red}Not installed${end}\n"
+			fi
+			sleep 1
+			
+			
+		;;
+		6)
 			git clone https://github.com/lanmaster53/recon-ng.git $githome/$(echo lanmaster53/recon-ng | awk -F '/' '{print $NF}') > /dev/null 2>&1
 			echo "Downloading recon-ng..."
             simulate_task
@@ -184,7 +305,7 @@ while true; do
 		;;
 
 
-		4)
+		7)
 			echo "First of all, we need to install all the dependencies!"
 			sudo apt update
 			sudo apt install -y mongodb
@@ -240,6 +361,17 @@ while true; do
                     echo "Exiting..."
 					exit 0
 
+		;;
+
+		6)
+			git clone https://github.com/smicallef/spiderfoot.git $githome/$(echo smicallef/spiderfoot | awk -F '/' '{print $NF}') > /dev/null 2>&1
+			echo "Downloading spiderfoot..."
+            simulate_task
+			cd $githome/smicallef/spiderfoot
+			pip3 install -r requirements.txt
+			echo "Write an address to connect to this tool. Ex: ==> ${green} 127.0.0.1:8080 ${end}"
+			read -p "Address and port: " address
+			python3 ./sf.py -l $address
 		;;
 
 		11)
